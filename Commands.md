@@ -26,6 +26,16 @@ mix phx.new hello
 mix ecto.create
 ```
 
+
+```shell
+mix ecto.drop
+```
+
+
+```shell
+mix ecto.migrate
+```
+
 ```shell
 mix phx.server
 ```
