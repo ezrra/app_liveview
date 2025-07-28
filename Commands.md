@@ -47,3 +47,15 @@ brew services list
 ```shell
 brew services start postgresql@14
 ```
+
+```shell
+mix ecto.gen.migration create_jobs_table
+```
+
+```shell
+mix ecto.migrate
+```
+
+```shell
+iex -S mix
+```
