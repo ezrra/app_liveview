@@ -9,8 +9,9 @@ defmodule AppWeb.JobsLive do
   def mount(_params, _session, socket) do
     job = %Job{}
     changeset = Job.changeset(job)
+    jobs = Jobs.list_jobs()
 
-    socket = assign(socket, changeset: changeset, job: job)
+    socket = assign(socket, changeset: changeset, job: job, jobs: jobs)
 
     {:ok, socket}
   end
@@ -28,7 +29,7 @@ defmodule AppWeb.JobsLive do
   @impl true
   def handle_event("save", %{"job" => params}, socket) do
     case Jobs.create_job(params) do
-      {:ok, job} ->
+      {:ok, _job} ->
         {:noreply,
           socket
           |> put_flash(:info, "Trabajo creado exitosamente.")
@@ -43,12 +44,22 @@ defmodule AppWeb.JobsLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <div>
+    <div class="space-y-8">
       <.form :let={f} for={@changeset} phx-change="validate" phx-submit="save" class="space-y-6">
         <.input type="text" field={f[:title]} />
         <.input type="text" field={f[:description]} />
         <.button>Crear</.button>
       </.form>
+
+      <div>
+        <h2>Lista de trabajos</h2>
+
+        <%= for job <- @jobs do %>
+          <div class="border-b last:border-b-0 py-2">
+            <strong><%= job.title %></strong>: <%= job.description %>
+          </div>
+        <% end %>
+      </div>
     </div>
     """
   end
